@@ -1,5 +1,5 @@
-import selenium
 from selenium import webdriver
+import logging
 DOWNLOAD_PATH = ''
 
 class WebDriver:
@@ -14,8 +14,13 @@ class WebDriver:
             ff_profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf,text/csv,application/zip")
             self.driver = webdriver.Firefox(firefox_profile=ff_profile)
         elif self.browser_name == 'Chrome':
-            self.driver = webdriver.Chrome()
+            chrome_opts = webdriver.ChromeOptions()
+            self.driver = webdriver.Chrome(chrome_options=chrome_opts)
+            logging.info("Chrome started!")
         else:
             pass
         self.driver.maximize_window()
         self.driver.set_window_position()
+
+    def quit_webdriver(self):
+        self.driver.quit()
