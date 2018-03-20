@@ -15,7 +15,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--broswer'
+    '-b','--browser', help="Please select blower you want to run your test scripts", type=str, default='firefox'
 )
 args = parser.parse_args()
 
