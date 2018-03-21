@@ -7,7 +7,7 @@ class ElementBase:
     def __init__(self,find_method, find_value, driver):
         self.find_method = find_method
         self.find_value = find_value
-        self.driver = webdriver.Chrome
+        self.driver = driver
 
     def find_element(self):
         try:
