@@ -1,3 +1,4 @@
+import selenium
 from selenium import webdriver
 import logging
 import os
@@ -9,6 +10,7 @@ if os.path.exists(DOWNLOAD_PATH):
 class TestWebDriver:
     def __init__(self, browser_name):
         self.browser_name = browser_name
+        self.driver = None
 
     def start_webdriver(self):
         if self.browser_name == 'Firefox':
@@ -30,8 +32,55 @@ class TestWebDriver:
         else:
             pass
         self.driver.maximize_window()
-        return self.driver
 
     def quit_webdriver(self):
         self.driver.quit()
         logging.info("Browser quit!")
+
+    def find_element(self, element):
+        try:
+            if element.find_method == 'xpath':
+                return self.driver.find_element_by_xpath(element.find_value)
+            elif element.find_method == 'class_name':
+                return self.driver.find_element_by_class_name(element.find_value)
+            elif element.find_method == 'id':
+                return self.driver.find_element_by_id(element.find_value)
+            elif element.find_method == 'name':
+                return self.driver.find_element_by_name(element.find_value)
+            elif element.find_method == 'tag_name':
+                return self.driver.find_element_by_tag_name(element.find_value)
+            elif element.find_method == 'link_text':
+                return self.driver.find_element_by_link_text(element.find_value)
+            elif element.find_method == 'partial_link_text':
+                return self.driver.find_element_by_partial_link_text(element.find_value)
+            elif element.find_method == 'css_selector':
+                return self.driver.find_element_by_css_selector(element.find_value)
+        except selenium.common.exceptions.NoSuchElementException:
+            return None
+
+    def find_elements(self, element):
+        try:
+            if element.find_method == 'xpath':
+                return self.driver.find_elements_by_xpath(element.find_value)
+            elif element.find_method == 'class_name':
+                return self.driver.find_elements_by_class_name(element.find_value)
+            elif element.find_method == 'id':
+                return self.driver.find_elements_by_id(element.find_value)
+            elif element.find_method == 'name':
+                return self.driver.find_elements_by_name(element.find_value)
+            elif element.find_method == 'tag_name':
+                return self.driver.find_elements_by_tag_name(element.find_value)
+            elif element.find_method == 'link_text':
+                return self.driver.find_elements_by_link_text(element.find_value)
+            elif element.find_method == 'partial_link_text':
+                return self.driver.find_elements_by_partial_link_text(element.find_value)
+            elif element.find_method == 'css_selector':
+                return self.driver.find_elements_by_css_selector(element.find_value)
+        except selenium.common.exceptions.NoSuchElementException:
+            return None
+
+    def get_url(self, url):
+        self.driver.get(url)
+
+    def refresh_page(self):
+        pass
