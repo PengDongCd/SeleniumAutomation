@@ -2,8 +2,6 @@ import logging
 import time
 import os
 
-import sys
-
 
 class TestLogger:
     def __init__(self, test_script_name):

@@ -7,15 +7,20 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 
 class ElementBase:
-    def __init__(self,find_method, find_value, test_driver: TestWebDriver):
+    test_driver = None
+
+    @classmethod
+    def set_test_driver(cls, test_driver: TestWebDriver):
+        cls.test_driver = test_driver
+
+    def __init__(self,find_method, find_value):
         self.find_method = find_method
         self.find_value = find_value
-        self.test_driver = test_driver
         self.element = None
 
     def get_element(self):
         try:
-            self.element = self.test_driver.find_element(self)
+            self.element = ElementBase.test_driver.find_element(self)
         except selenium.common.exceptions.NoSuchElementException:
             logging.error("Error! This element doesn't exist!")
         if self.element:
@@ -26,7 +31,7 @@ class ElementBase:
 
 
     def get_elements_list(self):
-        self.elements = self.test_driver.find_elements(self)
+        self.elements = ElementBase.test_driver.find_elements(self)
         if self.elements:
             logging.info("Found elements list by {method} with {value}".format(method=self.find_method, value=self.find_value))
             return self.elements
@@ -45,7 +50,7 @@ class ElementBase:
 
     def click(self):
         if self.is_visible():
-            self.test_driver.driver.execute_script('arguments[0].scrollIntoView(true);', self.element)
+            ElementBase.test_driver.driver.execute_script('arguments[0].scrollIntoView(true);', self.element)
             try:
                 self.element.click()
                 logging.info("Click on element ID={id} succeed".format(id=self.element.id))
@@ -72,7 +77,7 @@ class ElementBase:
                 sleep(1)
 
     def wait_until(self, timeout, func):
-        wait = WebDriverWait(self.test_driver.driver, timeout)
+        wait = WebDriverWait(ElementBase.test_driver.driver, timeout)
         wait.until(func)
 
     def get_property(self, p_name):

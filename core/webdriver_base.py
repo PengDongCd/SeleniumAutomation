@@ -31,7 +31,7 @@ class TestWebDriver:
             chrome_opts.add_argument('--disable-popup-blocking')
             chrome_opts.add_argument('--ignore-certificate-errors')
             chrome_opts.add_argument('--test-type')
-            chrome_opts.add_argument('--headless')
+            #chrome_opts.add_argument('--headless')
             chrome_opts.add_argument('--disable-gpu')
             #chrome_opts.add_argument('--remote-debugging-port=9222')
             self.driver = webdriver.Chrome(chrome_options=chrome_opts)
@@ -95,7 +95,7 @@ class TestWebDriver:
         self.driver.refresh()
         logging.info("Current page is refreshed!")
 
-    def save_screenshot(self):
+    def save_screenshot(self, tag=''):
         time_str = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-        file_name = os.path.join(SCREENSHOOT_PATH, 'screenshot_at_'+ time_str + '.png')
+        file_name = os.path.join(SCREENSHOOT_PATH, 'screenshot_at_'+ time_str + tag + '.png')
         self.driver.save_screenshot(file_name)
