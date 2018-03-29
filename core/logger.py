@@ -2,7 +2,6 @@ import logging
 import time
 import os
 
-
 class TestLogger:
     def __init__(self, test_script_name):
         log_file__folder_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs', 'log')

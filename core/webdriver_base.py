@@ -13,17 +13,17 @@ if not os.path.exists(SCREENSHOOT_PATH):
 
 class TestWebDriver:
     def __init__(self, browser_name):
-        self.browser_name = browser_name
+        self.browser_name = browser_name.lower()
         self.driver = None
 
     def start_webdriver(self):
-        if self.browser_name == 'Firefox':
+        if self.browser_name == 'firefox':
             ff_profile = webdriver.FirefoxProfile()
             ff_profile.set_preference("browser.download.folderList",2)
             ff_profile.set_preference("browser.download.dir", DOWNLOAD_PATH)
             ff_profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf,text/csv,application/zip")
             self.driver = webdriver.Firefox(firefox_profile=ff_profile)
-        elif self.browser_name == 'Chrome':
+        elif self.browser_name == 'chrome':
             chrome_opts = webdriver.ChromeOptions()
             prefs = {"download.default_directory": DOWNLOAD_PATH, "download.prompt_for_download":False}
             chrome_opts.add_experimental_option("prefs", prefs)
@@ -37,7 +37,7 @@ class TestWebDriver:
             self.driver = webdriver.Chrome(chrome_options=chrome_opts)
             logging.info("Chrome started!")
         else:
-            pass
+            logging.error("the browser name you input is not include in this tool!")
         self.driver.maximize_window()
 
     def quit_webdriver(self):
@@ -85,6 +85,8 @@ class TestWebDriver:
                 return self.driver.find_elements_by_partial_link_text(element.find_value)
             elif element.find_method == 'css_selector':
                 return self.driver.find_elements_by_css_selector(element.find_value)
+            else:
+                logging.error("the find method {find_method}is not correct!".format(find_method=element.find_method))
         except selenium.common.exceptions.NoSuchElementException:
             return None
 
